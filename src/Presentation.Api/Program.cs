@@ -23,7 +23,7 @@ using (var scope = app.Services.CreateScope())
 
 await IdentityInitializer.SeedAsync(app.Services, builder.Configuration);
 
-app.UseCors("Frontend");
+app.UseCors("AuthGateway");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

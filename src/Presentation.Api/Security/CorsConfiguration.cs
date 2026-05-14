@@ -6,10 +6,10 @@ public static class CorsConfiguration
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("Frontend", policy =>
+            options.AddPolicy("AuthGateway", policy =>
             {
                 policy
-                    .WithOrigins("https://shiko-webbapp-hy5amuoen-stellaj1999s-projects.vercel.app/", "http://127.0.0.1:5500", "http://localhost:3000", "https://localhost:3000")
+                    .WithOrigins("https://shiko-team1-backend-auth-gateway.azurewebsites.net", "http://127.0.0.1:5500", "http://localhost:3000", "https://localhost:3000")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
