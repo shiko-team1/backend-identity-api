@@ -11,15 +11,16 @@ public sealed class OpenApiDocumentTransformer : IOpenApiDocumentTransformer
         document.Info.Description = """
             ## Introduction
 
-            The JWT Token Generator API provides a minimal and robust endpoint for generating JSON Web Tokens (JWT) for authenticated users. 
-            It is designed to be used in a microservice architecture, where authentication and user information are managed by separate services.
+            The Identity API provides endpoints for user authentication and identity management within the system.
+            It enables clients to register new users, authenticate existing users, and manage user credentials and profile information.
 
             With this API, you can:
-            - Generate a JWT token containing user claims such as userId, role, email, firstName, and lastName
-            - Integrate secure token generation into your authentication flow
-            - Enable stateless authentication for frontend and other services
+            - Register new users
+            - Authenticate users and validate credentials
+            - Retrieve user identity and profile details
+            - Manage user account information
 
-            This API is intended to be called by an authentication gateway, which collects user information from relevant microservices and requests a signed JWT for downstream use.
+            This API serves as the central authority for user authentication and identity data, supporting secure and flexible integration with other services in your application architecture.
             """;
 
         return Task.CompletedTask;
