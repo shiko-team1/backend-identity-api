@@ -4,4 +4,7 @@
     <Project Path="src/Infrastructure/Infrastructure.csproj" />
     <Project Path="src/Presentation.Api/Identity.Api.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/IdentityApi.UnitTests/IdentityApi.UnitTests.csproj" />
+  </Folder>
 </Solution>

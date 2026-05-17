@@ -14,7 +14,14 @@ public static class AuthEndpoints
         group.MapPost("/login", Login);
         group.MapGet("/email-status", CheckEmailStatus);
         group.MapPost("/confirm-email", ConfirmEmail);
-        group.MapPost("/set-password", SetPassword);
+
+        var gatewayGroup = app.MapGroup("/api/auth/gateway")
+        .WithTags("Auth-Gateway")
+        .RequireAuthorization("ApiKeyPolicy");
+
+        gatewayGroup.MapPost("/set-password", SetPassword);
+        gatewayGroup.MapPut("/change-password", ChangePassword);
+        gatewayGroup.MapPost("/verify-password", VerifyPassword);
     }
 
     private static async Task<IResult> Login(
@@ -79,6 +86,37 @@ public static class AuthEndpoints
             SetPasswordStatus.Error => Results.BadRequest(result.ErrorMessage),
             SetPasswordStatus.Success => Results.Ok(),
             _ => Results.Problem("Set password failed.")
+        };
+    }
+
+    private static async Task<IResult> ChangePassword(
+    ChangePasswordRequest request,
+    IAuthService authService,
+    CancellationToken cancellationToken)
+    {
+        var result = await authService.ChangePasswordAsync(request, cancellationToken);
+        return result.Status switch
+        {
+            ChangePasswordStatus.UserNotFound => Results.NotFound(),
+            ChangePasswordStatus.InvalidCurrentPassword => Results.BadRequest("Invalid current password."),
+            ChangePasswordStatus.InvalidNewPassword => Results.BadRequest(result.ErrorMessage),
+            ChangePasswordStatus.Success => Results.Ok(),
+            _ => Results.Problem("Password change failed.")
+        };
+    }
+
+    private static async Task<IResult> VerifyPassword(
+        VerifyPasswordRequest request,
+        IAuthService authService,
+        CancellationToken cancellationToken)
+    {
+        var result = await authService.VerifyPasswordAsync(request, cancellationToken);
+        return result.Status switch
+        {
+            VerifyPasswordStatus.UserNotFound => Results.NotFound(),
+            VerifyPasswordStatus.InvalidPassword => Results.BadRequest("Invalid password."),
+            VerifyPasswordStatus.Valid => Results.Ok(new { valid = true }),
+            _ => Results.Problem("Password verification failed.")
         };
     }
 }

@@ -2,6 +2,7 @@ using Infrastructure;
 using Infrastructure.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Api.Endpoints;
+using Presentation.Api.Middleware;
 using Presentation.Api.OpenApi;
 using Presentation.Api.Security;
 
@@ -14,6 +15,8 @@ builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseMiddleware<ApiKeyMiddleware>();
 
 using (var scope = app.Services.CreateScope())
 {

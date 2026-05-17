@@ -88,4 +88,5 @@ public sealed class AuthService(
         var error = result.Errors.FirstOrDefault()?.Description;
         return new SetPasswordResult(SetPasswordStatus.InvalidPassword, error ?? "Invalid password.");
     }
+
 }
