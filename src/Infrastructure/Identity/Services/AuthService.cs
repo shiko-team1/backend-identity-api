@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Inputs;
 using Application.Outputs;
+using Application.Outputs.Statuses;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity.Services;
@@ -36,6 +37,7 @@ public sealed class AuthService(
 
     public async Task<EmailCheckResult> CheckEmailAsync(string email, CancellationToken cancellationToken)
     {
+        email = email.Trim();
         var user = await userManager.FindByEmailAsync(email);
         if (user is null)
         {
@@ -48,6 +50,7 @@ public sealed class AuthService(
 
     public async Task<ConfirmEmailResult> ConfirmEmailAsync(ConfirmEmailRequest request, CancellationToken cancellationToken)
     {
+        var email = request.Email.Trim();
         var user = await userManager.FindByEmailAsync(request.Email);
         if (user is null)
         {
@@ -68,6 +71,7 @@ public sealed class AuthService(
 
     public async Task<SetPasswordResult> SetPasswordAsync(SetPasswordRequest request, CancellationToken cancellationToken)
     {
+        var email = request.Email.Trim();
         var user = await userManager.FindByEmailAsync(request.Email);
         if (user is null)
         {
@@ -89,4 +93,42 @@ public sealed class AuthService(
         return new SetPasswordResult(SetPasswordStatus.InvalidPassword, error ?? "Invalid password.");
     }
 
+    public async Task<ChangePasswordResult> ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken)
+    {
+        var email = request.Email.Trim();
+        var user = await userManager.FindByEmailAsync(request.Email);
+        if (user is null)
+        {
+            return new ChangePasswordResult(ChangePasswordStatus.UserNotFound);
+        }
+
+        if (!await userManager.CheckPasswordAsync(user, request.CurrentPassword))
+        {
+            return new ChangePasswordResult(ChangePasswordStatus.InvalidCurrentPassword);
+        }
+
+        var result = await userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+        if (result.Succeeded)
+        {
+            return new ChangePasswordResult(ChangePasswordStatus.Success);
+        }
+
+        var error = result.Errors.FirstOrDefault()?.Description;
+        return new ChangePasswordResult(ChangePasswordStatus.InvalidNewPassword, error ?? "Invalid new password.");
+    }
+
+    public async Task<VerifyPasswordResult> VerifyPasswordAsync(VerifyPasswordRequest request, CancellationToken cancellationToken)
+    {
+        var email = request.Email.Trim();
+        var user = await userManager.FindByEmailAsync(request.Email);
+        if (user is null)
+        {
+            return new VerifyPasswordResult(VerifyPasswordStatus.UserNotFound);
+        }
+
+        var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
+        return result.Succeeded
+            ? new VerifyPasswordResult(VerifyPasswordStatus.Valid)
+            : new VerifyPasswordResult(VerifyPasswordStatus.InvalidPassword);
+    }
 }

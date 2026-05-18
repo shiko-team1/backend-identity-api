@@ -1,8 +1,8 @@
+using Identity.Api.Security;
 using Infrastructure;
 using Infrastructure.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Api.Endpoints;
-using Presentation.Api.Middleware;
 using Presentation.Api.OpenApi;
 using Presentation.Api.Security;
 
@@ -14,9 +14,10 @@ builder.Services.AddOpenApiConfiguration();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddAuthorization();
 
-var app = builder.Build();
+builder.Services.Configure<ApiKeyOptions>(builder.Configuration.GetSection(ApiKeyOptions.SectionName));
+builder.Services.AddScoped<ApiKeyMiddleware>();
 
-app.UseMiddleware<ApiKeyMiddleware>();
+var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {

@@ -1,6 +1,8 @@
 ﻿using Application.Abstractions;
 using Application.Inputs;
 using Application.Outputs;
+using Application.Outputs.Statuses;
+using Identity.Api.Security;
 
 namespace Presentation.Api.Endpoints;
 
@@ -9,15 +11,15 @@ public static class AuthEndpoints
     public static void MapAuthEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/api/auth")
-            .WithTags("Auth");
+            .WithTags("Auth")
+            .AddEndpointFilter<ApiKeyMiddleware>();
 
         group.MapPost("/login", Login);
         group.MapGet("/email-status", CheckEmailStatus);
         group.MapPost("/confirm-email", ConfirmEmail);
 
         var gatewayGroup = app.MapGroup("/api/auth/gateway")
-        .WithTags("Auth-Gateway")
-        .RequireAuthorization("ApiKeyPolicy");
+                .AddEndpointFilter<ApiKeyMiddleware>(); 
 
         gatewayGroup.MapPost("/set-password", SetPassword);
         gatewayGroup.MapPut("/change-password", ChangePassword);

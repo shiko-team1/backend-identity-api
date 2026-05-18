@@ -14,5 +14,7 @@ namespace Application.Abstractions
         Task<EmailCheckResult> CheckEmailAsync(string email, CancellationToken cancellationToken);
         Task<ConfirmEmailResult> ConfirmEmailAsync(ConfirmEmailRequest request, CancellationToken cancellationToken);
         Task<SetPasswordResult> SetPasswordAsync(SetPasswordRequest request, CancellationToken cancellationToken);
+        Task<ChangePasswordResult> ChangePasswordAsync(ChangePasswordRequest request, CancellationToken cancellationToken);
+        Task<VerifyPasswordResult> VerifyPasswordAsync(VerifyPasswordRequest request, CancellationToken cancellationToken);
     }
 }
