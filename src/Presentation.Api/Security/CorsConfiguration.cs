@@ -9,7 +9,7 @@ public static class CorsConfiguration
             options.AddPolicy("AuthGateway", policy =>
             {
                 policy
-                    .WithOrigins("https://shiko-team1-backend-auth-gateway.azurewebsites.net", "http://127.0.0.1:5500", "http://localhost:3000", "https://localhost:3000")
+                    .WithOrigins("https://shiko-team1-backend-auth-gateway.azurewebsites.net", "https://127.0.0.1:5500", "https://localhost:3000", "https://localhost:3000")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
