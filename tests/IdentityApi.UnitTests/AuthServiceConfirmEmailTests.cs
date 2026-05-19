@@ -17,7 +17,7 @@ public class AuthServiceConfirmEmailTests
         _userManagerMock = new Mock<UserManager<IdentityUser>>(
             Mock.Of<IUserStore<IdentityUser>>(), null, null, null, null, null, null, null, null);
 
-        _authService = new AuthService(_userManagerMock.Object, Mock.Of<SignInManager<IdentityUser>>());
+        _authService = new AuthService(_userManagerMock.Object, IdentityTestHelpers.CreateSignInManagerMock(_userManagerMock.Object).Object);
     }
 
     [Fact]

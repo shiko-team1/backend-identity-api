@@ -22,7 +22,14 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<Infrastructure.Identity.Data.AppIdentityDbContext>();
-    db.Database.Migrate();
+    if (app.Environment.IsEnvironment("Testing"))
+    {
+        db.Database.EnsureCreated();
+    }
+    else
+    {
+        db.Database.Migrate();
+    }
 }
 
 await IdentityInitializer.SeedAsync(app.Services, builder.Configuration);
@@ -38,3 +45,5 @@ app.MapAuthEndpoints();
 app.MapAdminEndpoints();
 
 app.Run();
+
+public partial class Program;

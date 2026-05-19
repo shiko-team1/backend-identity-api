@@ -1,6 +1,66 @@
-@Presentation.Api_HostAddress = http://localhost:5077
+@Presentation.Api_HostAddress = 
+@Presentation.Api_Key =
 
-GET {{Presentation.Api_HostAddress}}/weatherforecast/
+### Public: Login (requires API key)
+POST {{Presentation.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
 Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
+{
+  "email": "test@example.com",
+  "password": "P@ssw0rd!"
+}
+###
 
+### Public: Check email status (querystring) (requires API key)
+GET {{Presentation.Api_HostAddress}}/api/auth/email-status?email=test@example.com
+Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
+###
+
+### Public: Confirm email (requires API key)
+POST {{Presentation.Api_HostAddress}}/api/auth/confirm-email
+Content-Type: application/json
+Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
+{
+  "email": "test@example.com"
+}
+###
+
+### Gateway: Set password (requires API key)
+POST {{Presentation.Api_HostAddress}}/api/auth/gateway/set-password
+Content-Type: application/json
+Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
+
+{
+  "email": "test@example.com",
+  "password": "NewP@ssw0rd!"
+}
+###
+
+### Gateway: Change password (requires API key)
+PUT {{Presentation.Api_HostAddress}}/api/auth/gateway/change-password
+Content-Type: application/json
+Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
+
+{
+  "email": "test@example.com",
+  "currentPassword": "OldP@ssw0rd!",
+  "newPassword": "NewP@ssw0rd!"
+}
+###
+
+### Gateway: Verify password (requires API key)
+POST {{Presentation.Api_HostAddress}}/api/auth/gateway/verify-password
+Content-Type: application/json
+Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
+
+{
+  "email": "test@example.com",
+  "password": "P@ssw0rd!"
+}
 ###
