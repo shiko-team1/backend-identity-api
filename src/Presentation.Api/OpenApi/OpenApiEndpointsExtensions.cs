@@ -6,8 +6,8 @@ public static class OpenApiEndpointsExtensions
 {
     public static WebApplication MapOpenApiEndpoints(this WebApplication app)
     {
-        if (!app.Environment.IsDevelopment())
-            return app;
+        //if (!app.Environment.IsDevelopment())
+        //    return app;
 
         app.MapOpenApi();
 
