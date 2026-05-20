@@ -17,6 +17,7 @@ public sealed class ApiKeyMiddleware(
                 "API key rejected because ApiKey:Value is not configured. HeaderName={HeaderName}",
                 _options.HeaderName);
 
+            AddDiagnosticHeaders(context, "missing-config");
             return ValueTask.FromResult<object?>(Results.Unauthorized());
         }
 
@@ -26,6 +27,7 @@ public sealed class ApiKeyMiddleware(
                 "API key rejected because request header is missing. HeaderName={HeaderName}",
                 _options.HeaderName);
 
+            AddDiagnosticHeaders(context, "missing-header");
             return ValueTask.FromResult<object?>(Results.Unauthorized());
         }
 
@@ -35,9 +37,16 @@ public sealed class ApiKeyMiddleware(
                 "API key rejected because request header value does not match configured value. HeaderName={HeaderName}",
                 _options.HeaderName);
 
+            AddDiagnosticHeaders(context, "value-mismatch");
             return ValueTask.FromResult<object?>(Results.Unauthorized());
         }
 
         return next(context);
+    }
+
+    private void AddDiagnosticHeaders(EndpointFilterInvocationContext context, string reason)
+    {
+        context.HttpContext.Response.Headers["X-Api-Key-Diagnostic"] = reason;
+        context.HttpContext.Response.Headers["X-Api-Key-Header-Name"] = _options.HeaderName;
     }
 }
