@@ -360,5 +360,16 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd**/secrets.json
+FodyWeavers.xsd
+
+# Local IDE settings
+.idea/
+.vscode/
+*.sln.iml
+
+# Local development secrets/settings
+**/secrets.json
 **/appsettings.Development.json
+
+# Local publish/test scratch output
+tmp-publish-check/

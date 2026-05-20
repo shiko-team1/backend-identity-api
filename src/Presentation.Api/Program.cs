@@ -41,6 +41,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapOpenApiEndpoints();
+app.MapDebugEndpoints();
 app.MapAuthEndpoints();
 app.MapAdminEndpoints();
 
