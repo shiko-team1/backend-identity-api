@@ -65,7 +65,11 @@ X-API-KEY: {{Presentation.Api_Key}}
 }
 ###
 
-### Admin: Create user`r`nPOST {{Presentation.Api_HostAddress}}/api/admin/users`r`nContent-Type: application/json`r`nAccept: application/json`r`nX-API-KEY: {{Presentation.Api_Key}}
+### Admin: Create user
+POST {{Presentation.Api_HostAddress}}/api/admin/users
+Content-Type: application/json
+Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
 
 {
   "email": "newuser@example.com",
@@ -73,5 +77,8 @@ X-API-KEY: {{Presentation.Api_Key}}
 }
 ###
 
-### Admin: Delete user by id`r`nDELETE {{Presentation.Api_HostAddress}}/api/admin/users/{{UserId}}`r`nAccept: application/json`r`nX-API-KEY: {{Presentation.Api_Key}}
+### Admin: Delete user by id
+DELETE {{Presentation.Api_HostAddress}}/api/admin/users/{{UserId}}
+Accept: application/json
+X-API-KEY: {{Presentation.Api_Key}}
 ###
