@@ -1,6 +1,7 @@
-﻿using Application.Abstractions;
+using Application.Abstractions;
 using Application.Inputs;
 using Application.Outputs;
+using Identity.Api.Security;
 
 namespace Presentation.Api.Endpoints;
 
@@ -9,7 +10,8 @@ public static class AdminEndpoints
     public static void MapAdminEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/api/admin")
-            .WithTags("Admin");
+            .WithTags("Admin")
+            .AddEndpointFilter<ApiKeyMiddleware>();
 
         group.MapPost("/users", CreateUser);
         group.MapDelete("/users/{id}", DeleteUserById);

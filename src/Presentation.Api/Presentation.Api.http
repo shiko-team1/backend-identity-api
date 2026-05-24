@@ -64,3 +64,14 @@ X-API-KEY: {{Presentation.Api_Key}}
   "password": "P@ssw0rd!"
 }
 ###
+
+### Admin: Create user`r`nPOST {{Presentation.Api_HostAddress}}/api/admin/users`r`nContent-Type: application/json`r`nAccept: application/json`r`nX-API-KEY: {{Presentation.Api_Key}}
+
+{
+  "email": "newuser@example.com",
+  "role": "student"
+}
+###
+
+### Admin: Delete user by id`r`nDELETE {{Presentation.Api_HostAddress}}/api/admin/users/{{UserId}}`r`nAccept: application/json`r`nX-API-KEY: {{Presentation.Api_Key}}
+###
