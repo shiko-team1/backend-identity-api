@@ -86,7 +86,7 @@ public static class AuthEndpoints
             SetPasswordStatus.AlreadyHasPassword => Results.Conflict(),
             SetPasswordStatus.InvalidPassword => Results.BadRequest(result.ErrorMessage),
             SetPasswordStatus.Error => Results.BadRequest(result.ErrorMessage),
-            SetPasswordStatus.Success => Results.Ok(),
+            SetPasswordStatus.Success => Results.Ok(new { userId = result.UserId }),
             _ => Results.Problem("Set password failed.")
         };
     }

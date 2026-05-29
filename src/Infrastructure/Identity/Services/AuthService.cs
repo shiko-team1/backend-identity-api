@@ -86,7 +86,7 @@ public sealed class AuthService(
         var result = await userManager.AddPasswordAsync(user, request.Password);
         if (result.Succeeded)
         {
-            return new SetPasswordResult(SetPasswordStatus.Success);
+            return new SetPasswordResult(SetPasswordStatus.Success, UserId: user.Id);
         }
 
         var error = result.Errors.FirstOrDefault()?.Description;
